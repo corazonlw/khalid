@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تأكيد الحجز</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        .container {
+            padding: 40px;
+            border-radius: 8px;
+            max-width: 400px;
+            margin: 100px auto;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #58D68D;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>تأكيد الحجز</h1>
+        <p id="confirmationMessage"></p>
+        <button onclick="goBack()">رجوع</button>
+    </div>
+
+    <script>
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        function displayConfirmation() {
+            const teacher = getQueryParam('teacher');
+            const day = getQueryParam('day');
+            const period = getQueryParam('period');
+
+            const message = `تم حجز الحصة بنجاح! المعلم: ${teacher}، اليوم: ${day}، الحصة: ${period}.`;
+            document.getElementById("confirmationMessage").innerText = message;
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        displayConfirmation();
+    </script>
+
+</body>
+</html>

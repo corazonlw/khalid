@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الحصص الشاغرة بالمختبر</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://images.unsplash.com/photo-1530423972535-a5e97934a6e0');
+            background-size: cover;
+            color: #ffffff;
+        }
+        .container {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 8px;
+            max-width: 400px;
+            margin: 100px auto;
+        }
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #58D68D;
+        }
+        label, select, button {
+            font-size: 1.1em;
+            margin: 15px 0;
+        }
+        select, button {
+            width: 100%;
+            padding: 10px;
+            background-color: #333;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            appearance: none;
+            font-size: 1em;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>الحصص الشاغرة بالمختبر</h1>
+
+        <label for="daySelect">اختر اليوم:</label>
+        <select id="daySelect" onchange="updatePeriods()">
+            <option value="">--اختر اليوم--</option>
+            <option value="الأحد">الأحد</option>
+            <option value="الاثنين">الاثنين</option>
+            <option value="الثلاثاء">الثلاثاء</option>
+            <option value="الأربعاء">الأربعاء</option>
+            <option value="الخميس">الخميس</option>
+        </select>
+
+        <label for="periodSelect">اختر الحصة الشاغرة:</label>
+        <select id="periodSelect">
+            <option value="">--اختر الحصة الشاغرة--</option>
+        </select>
+
+        <label for="teacherSelect">اختر المعلم:</label>
+        <select id="teacherSelect">
+            <option value="">--اختر المعلم--</option>
+            <option value="أحمد الحارثي">أحمد الحارثي</option>
+            <option value="خالد الفارسي">خالد الفارسي</option>
+            <option value="سعيد الهنائي">سعيد الهنائي</option>
+            <option value="محمد البوسعيدي">محمد البوسعيدي</option>
+            <option value="علي العُماني">علي العُماني</option>
+            <option value="يوسف الشكيلي">يوسف الشكيلي</option>
+            <option value="ناصر السعدي">ناصر السعدي</option>
+        </select>
+
+        <button onclick="confirmBooking()">حجز</button>
+    </div>
+
+    <script>
+        const reservedSchedule = {
+            "الأحد": ["الأولى", "الثانية", "الرابعة"],
+            "الاثنين": ["الثالثة", "الخامسة", "السادسة"],
+            "الثلاثاء": ["السابعة", "الثامنة"],
+            "الأربعاء": ["الأولى", "الثانية"],
+            "الخميس": ["الثالثة", "الرابعة", "الخامسة", "السادسة"]
+        };
+
+        const allPeriods = ["الأولى", "الثانية", "الثالثة", "الرابعة", "الخامسة", "السادسة", "السابعة", "الثامنة"];
+
+        function updatePeriods() {
+            const daySelect = document.getElementById("daySelect").value;
+            const periodSelect = document.getElementById("periodSelect");
+
+            periodSelect.innerHTML = '<option value="">--اختر الحصة الشاغرة--</option>';
+
+            if (daySelect) {
+                const reservedPeriods = reservedSchedule[daySelect] || [];
+                const availablePeriods = allPeriods.filter(period => !reservedPeriods.includes(period));
+
+                availablePeriods.forEach(period => {
+                    const option = document.createElement("option");
+                    option.value = period;
+                    option.text = period;
+                    periodSelect.appendChild(option);
+                });
+            }
+        }
+
+        function confirmBooking() {
+            const day = document.getElementById("daySelect").value;
+            const period = document.getElementById("periodSelect").value;
+            const teacher = document.getElementById("teacherSelect").value;
+
+            if (day && period && teacher) {
+                const confirmationMessage = `تم تأكيد حجز الحصة بنجاح! المعلم: ${teacher}، اليوم: ${day}، الحصة: ${period}.`;
+                alert(confirmationMessage);
+                // يمكنك هنا توجيه المستخدم إلى صفحة التأكيد
+                window.location.href = `confirmation.html?teacher=${encodeURIComponent(teacher)}&day=${encodeURIComponent(day)}&period=${encodeURIComponent(period)}`;
+            } else {
+                alert("يرجى اختيار اليوم والحصة الشاغرة والمعلم قبل الحجز.");
+            }
+        }
+    </script>
+
+</body>
+</html>
